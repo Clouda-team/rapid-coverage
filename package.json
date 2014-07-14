@@ -1,0 +1,33 @@
+{
+    "name": "tankjs-coverage",
+    "version": "0.1.0",
+    "master": "master.js",
+    "args": {
+        "--cov": {
+            "desc": "show code coverage",
+            "commands": ["start", "restart"]
+        },
+        "--cov_all": {
+            "desc": "show code coverage (including code in node_modules)",
+            "commands": ["start", "restart"],
+            "bind_env": "cov_all"
+        }
+    },
+    "actions": {
+        "started": {
+            "restart to disable coverage": "/restart/without-tankjs-coverage"
+        },
+        "stopped": {
+            "restart to enable coverage": "/restart/with-tankjs-coverage"
+        }
+    },
+    "links": {
+        "view coverage info": {
+            "path": "/report.html"
+        }
+    },
+    "disable": "tankjs-cluster",
+    "priority": 100,
+    "repository": "https://github.com/Clouda-team/tankjs-coverage.git",
+    "author": "kyriosli"
+}
