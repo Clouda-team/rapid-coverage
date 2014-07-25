@@ -9,7 +9,9 @@ menu {
     right: 0;
     background: #EFEFEF;
     padding: 1em;
-    box-shadow: 0 0 3px 1px #AAA
+    box-shadow: 0 0 3px 1px #AAA;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 fieldset {

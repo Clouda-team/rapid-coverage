@@ -23,10 +23,12 @@
     xhr.onload = function () {
         var files = JSON.parse(xhr.responseText),
             fileNames = Object.keys(files);
-        var preLen = fileNames[0].lastIndexOf('/') + 1, pre = fileNames[0].substr(0, preLen);
+
+        var preLen = fileNames[0].lastIndexOf('/') + 1 || fileNames[0].lastIndexOf('\\') + 1 , pre = fileNames[0].substr(0, preLen);
         fileNames.forEach(function (fileName) {
             while (fileName.substr(0, preLen) !== pre) {
                 pre = pre.substr(0, --preLen);
+                console.log('trim pre to', pre);
             }
         });
 

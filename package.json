@@ -5,11 +5,12 @@
     "args": {
         "--cov": {
             "desc": "show code coverage",
-            "commands": ["start", "restart"]
+            "commands": ["start", "restart", "test"]
         },
         "--cov_all": {
-            "desc": "show code coverage (including code in node_modules)",
-            "commands": ["start", "restart"],
+            "demo": "{n}",
+            "desc": "show code coverage (including code in node_modules). assign a value to specify how many node_modules could a module path contain",
+            "commands": ["start", "restart", "test"],
             "bind_env": "cov_all"
         }
     },

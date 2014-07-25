@@ -9,10 +9,20 @@ Uint32Array.prototype.toJSON = function () {
 
 var esprima = require('./esprima');
 
-var coverNodeModules = process.env.COVER_NODE_MODULES === 'on';
+var coverNodeModules = process.env.cov_all , coverDepth = 0;
+if (coverNodeModules) {
+    if (/^\d+$/.test(coverNodeModules)) {
+        coverDepth = +coverNodeModules;
+        coverNodeModules = false;
+    } else {
+        coverNodeModules = true;
+    }
+} else {
+    coverNodeModules = false;
+}
 
 // Current coverage information
-var files = {}, ignored = {};
+var files = {};
 
 exports.requestHandler = function (req, res) {
     res.end(JSON.stringify(files));
@@ -21,8 +31,12 @@ exports.requestHandler = function (req, res) {
 var Module = require('module');
 var $_compile = Module.prototype._compile;
 Module.prototype._compile = function (content, filename) {
-    if ((coverNodeModules || filename.indexOf('node_modules') === -1) && !ignored[filename]) {
-        content = addCoverage(this, filename, content);
+    var m;
+    switch (true) {
+        case coverNodeModules:
+        case filename.indexOf('node_modules') === -1:
+        case coverDepth && (m = filename.match(/([\/\\])node_modules\1/g)) && m.length <= coverDepth:
+            content = addCoverage(this, filename, content);
     }
     $_compile.call(this, content, filename);
 };
@@ -124,7 +138,7 @@ function addCoverage(module, filename, content) {
                 testBlock(stmt.body);
                 break;
             case 'DoWhileStatement':
-                console.log(stmt);
+//                console.log(stmt);
                 testBlock(stmt.body);
                 point = stmt.range[1];
                 addCov(stmt.loc.end.line);
