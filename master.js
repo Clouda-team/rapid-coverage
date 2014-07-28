@@ -47,8 +47,8 @@ function addCoverage(module, filename, content) {
     content = content.replace(/^\#\!.*/, '');
 
     var parsed = esprima.parse('function it(){' + content + '\n}', {range: true, loc: true});
-    var arr = [], stack = [], point, parentPoint = 0, useComma = false;
 
+    var arr = [], stack = [], point, useComma = false, covered = [];
     var blocks = [parsed.body[0].body], block;
     while (block = blocks.shift()) {
 //        console.log('parsing block ' + block.loc.start.line);
@@ -71,10 +71,15 @@ function addCoverage(module, filename, content) {
     newContent += content.substr(pos);
 
 //    console.error('//' + filename + '\n', '(function(exports, require, module, __filename, __dirname) {' + newContent + '\n})' + '();');
+    var lines = 0;
+    for (var j = line; j; j--) {
+        if (covered[j])lines++;
+    }
 
     files[filename] = {
         src: content,
-        coverage: module.coverage_cache = new Uint32Array(line + 1)
+        coverage: module.coverage_cache = new Uint32Array(line + 1),
+        lines: lines
     };
     return newContent;
 
@@ -211,6 +216,7 @@ function addCoverage(module, filename, content) {
 
     function addCov(line, atBeginning) {
         line--;
+        covered[line] = true;
         push({point: atBeginning ? block.range[0] + 1 : point, line: line, value: '++_cov$[' + line + ']' + (useComma ? ',' : ';')});
     }
 
@@ -277,12 +283,10 @@ function addCoverage(module, filename, content) {
                 expr.properties.forEach(function (prop) {
                     onExpr(prop.value)
                 });
-                addCov(expr.loc.end.line);
                 break;
             case 'ArrayExpression':
                 // 对数组初始化，遍历其elements
                 expr.elements.forEach(onExpr);
-                addCov(expr.loc.end.line);
                 break;
             case 'SequenceExpression':
                 stack.push(point);
@@ -294,7 +298,6 @@ function addCoverage(module, filename, content) {
                 useComma = false;
                 point = stack.pop();
                 break;
-
         }
 
     }

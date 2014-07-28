@@ -1,6 +1,6 @@
 {
     "name": "tankjs-coverage",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "master": "master.js",
     "args": {
         "--cov": {
@@ -8,8 +8,7 @@
             "commands": ["start", "restart", "test"]
         },
         "--cov_all": {
-            "demo": "{n}",
-            "desc": "show code coverage (including code in node_modules). assign a value to specify how many node_modules could a module path contain",
+            "desc": "show code coverage (including code in node_modules).\n\t\tAssign a value to specify how many node_modules could a module path contain",
             "commands": ["start", "restart", "test"],
             "bind_env": "cov_all"
         }

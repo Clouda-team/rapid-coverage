@@ -41,11 +41,11 @@
             var id = hash(shortName);
 
 
-            var lines = obj.src.split(/\r?\n/), count = lines.length, cov = obj.coverage;
+            var lines = obj.src.split(/\r?\n/), count = obj.lines, cov = obj.coverage;
             var covered = 0;
 
             lines = lines.map(function (line, i) {
-                if (cov[i] || !line.trim())
+                if (cov[i])
                     covered++;
                 return '<li class="' + (cov[i] ? 'covered' : '')
                     + '"><i>' + (i + 1) + '</i><span>' + line + '</span></li>'
