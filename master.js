@@ -72,8 +72,10 @@ function addCoverage(module, filename, content) {
 
 //    console.error('//' + filename + '\n', '(function(exports, require, module, __filename, __dirname) {' + newContent + '\n})' + '();');
     var lines = 0;
-    for (var j = line; j; j--) {
-        if (covered[j])lines++;
+    for (var j = line + 1; j--;) {
+        if (covered[j]) {
+            lines++;
+        }
     }
 
     files[filename] = {
@@ -222,12 +224,8 @@ function addCoverage(module, filename, content) {
 
     function push(obj) {
         var point = obj.point;
-        for (var L = arr.length, i = L; i--;) {
-            if (arr[i].point <= point) {
-                i++;
-                break;
-            }
-        }
+        for (var L = arr.length, i = L; i-- && arr[i].point > point;) ;
+        i++;
         if (i === L)
             arr.push(obj);
         else
