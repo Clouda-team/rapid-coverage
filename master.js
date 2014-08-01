@@ -77,12 +77,15 @@ function addCoverage(module, filename, content) {
             lines++;
         }
     }
-
-    files[filename] = {
-        src: content,
-        coverage: module.coverage_cache = new Uint32Array(line + 1),
-        lines: lines
-    };
+    if (files[filename] && files[filename].src === content) { // module reload
+        module.coverage_cache = files[filename].coverage;
+    } else {
+        files[filename] = {
+            src: content,
+            coverage: module.coverage_cache = new Uint32Array(line + 1),
+            lines: lines
+        };
+    }
     return newContent;
 
     function onStmt(stmt) {
