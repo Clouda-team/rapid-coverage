@@ -1,6 +1,6 @@
 {
-    "name": "tankjs-coverage",
-    "version": "1.0.0",
+    "name": "rapid-coverage",
+    "version": "0.1.0",
     "master": "master.js",
     "args": {
         "--cov": {
@@ -15,10 +15,10 @@
     },
     "actions": {
         "started": {
-            "restart to disable coverage": "/restart/without-tankjs-coverage"
+            "restart to disable coverage": "/restart/without-rapid-coverage"
         },
         "stopped": {
-            "restart to enable coverage": "/restart/with-tankjs-coverage"
+            "restart to enable coverage": "/restart/with-rapid-coverage"
         }
     },
     "links": {
@@ -26,8 +26,8 @@
             "path": "/report.html"
         }
     },
-    "disable": "tankjs-cluster",
+    "disable": "rapid-cluster",
     "priority": 100,
-    "repository": "https://github.com/Clouda-team/tankjs-coverage.git",
+    "repository": "https://github.com/Clouda-team/rapid-coverage.git",
     "author": "kyriosli"
 }
